@@ -1,0 +1,41 @@
+{
+  "name": "travisci-webhook",
+  "version": "1.0.0",
+  "description": "A flexible web server for reacting to Travis CI Webhooks",
+  "main": "server.js",
+  "scripts": {
+    "test": "node test.js"
+  },
+  "bin": {
+    "travisci-webhook": "./bin/travisci-webhook"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/chrisjaure/travisci-webhook.git"
+  },
+  "keywords": [
+    "webhook",
+    "travis",
+    "travis-ci"
+  ],
+  "author": "Chris Jaure <chrisjaure@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/chrisjaure/travisci-webhook/issues"
+  },
+  "homepage": "https://github.com/chrisjaure/travisci-webhook#readme",
+  "devDependencies": {
+    "eslint": "^1.3.0",
+    "eslint-config-defaults": "^5.0.0",
+    "supertest": "^1.1.0",
+    "tape": "^4.2.0"
+  },
+  "dependencies": {
+    "debug": "^2.2.0",
+    "matchme": "^2.0.1",
+    "split2": "^1.0.0",
+    "subarg": "^1.0.0",
+    "through2": "^2.0.0",
+    "travisci-webhook-handler": "^1.0.2"
+  }
+}
