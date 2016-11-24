@@ -10,7 +10,7 @@ Inspired by [github-webhook](https://github.com/rvagg/github-webhook).
 travisci-webhook \
   --port=9999 \
   --path=/webhook \
-  --token=mytravistoken \
+  --public_key=mytravispublickey \
   --log=/var/log/webhook.log \
   --rule [ --event=success --match='branch == master' --exec='echo yay!' ]
 ```
@@ -21,7 +21,7 @@ You can also specify a `--config <file>` where *file* is a JSON file containing 
 {
   "port": 9999,
   "path": "/webhook",
-  "token": "mytravistoken",
+  "public_key": "mytravispublickey",
   "log": "/var/log/webhook.log",
   "rules": [{
     "event": "success",
@@ -35,7 +35,7 @@ You can also specify a `--config <file>` where *file* is a JSON file containing 
 
 * **port** (required): the port for the server to listen to (also respects `PORT` env var)
 * **path** (required): the path / route to listen to webhook requests on, should match what you tell GitHub
-* **token** (required): the key used to hash the payload by Travis CI that we verify against
+* **public_key** (required): the public key corresponding to the private key that signed the payload, see [Verifying Webhook requests](https://docs.travis-ci.com/user/notifications#Verifying-Webhook-requests) for more info
 * **host** (optional): if you want to restrict `listen()` to a specific host
 * **log** (optional): a file to print logs to, each command execution will be logged, also note that you can set the `DEBUG` env var to see debug output (see [debug](https://github.com/visionmedia/debug))
 * **rules** (optional): an array of objects representing rules to match against and commands to execute, can also be supplied as individual `--rule` commandline arguments
