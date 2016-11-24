@@ -27,6 +27,7 @@
   "devDependencies": {
     "eslint": "^1.3.0",
     "eslint-config-defaults": "^5.0.0",
+    "node-rsa": "^0.4.2",
     "supertest": "^1.1.0",
     "tape": "^4.2.0"
   },
@@ -36,6 +37,6 @@
     "split2": "^1.0.0",
     "subarg": "^1.0.0",
     "through2": "^2.0.0",
-    "travisci-webhook-handler": "^1.0.2"
+    "travisci-webhook-handler": "^2.0.0"
   }
 }

@@ -1,11 +1,14 @@
 var test = require('tape');
 var fs = require('fs');
-var crypto = require('crypto');
 var supertest = require('supertest');
 var webhook = require('./');
+var NodeRSA = require('node-rsa');
 
-function signRequest (repoSlug, userToken) {
-    return crypto.createHash('sha256').update(repoSlug + userToken).digest('hex');
+var key = new NodeRSA({b: 1024}, {signingScheme: 'sha1'});
+var public_key = key.exportKey('public');
+
+function signRequest (obj) {
+    return key.sign(obj, 'base64', 'base64');
 }
 
 test('invalid url gets 404', function(t) {
@@ -14,7 +17,7 @@ test('invalid url gets 404', function(t) {
     var options = {
         port: 0,
         path: '/webhook',
-        token: 'foofaa'
+        public_key: public_key
     };
     var server = webhook(options);
 
@@ -35,7 +38,7 @@ test('valid url, incomplete data gets 400', function(t) {
     var options = {
         port: 0,
         path: '/webhook',
-        token: 'foofaa'
+        public_key: public_key
     };
     var server = webhook(options);
 
@@ -56,7 +59,7 @@ test('valid url, complete data gets 200', function(t) {
     var options = {
         port: 0,
         path: '/webhook',
-        token: 'foofaa'
+        public_key: public_key
     };
     var server = webhook(options);
     var obj = {
@@ -72,7 +75,7 @@ test('valid url, complete data gets 200', function(t) {
 
     supertest(server)
         .post('/webhook')
-        .set('Authorization', signRequest('test', 'foofaa'))
+        .set('Signature', signRequest(obj))
         .set('Travis-Repo-Slug', 'test')
         .send(json)
         .expect('Content-Type', /json/)
@@ -92,7 +95,7 @@ test('valid request triggers rule', function(t) {
     var options = {
         port: 0,
         path: '/webhook',
-        token: 'foofaa',
+        public_key: public_key,
         rules: [{ // should not trigger this event
             event: eventType,
             match: 'branch == xxmaster',
@@ -130,7 +133,7 @@ test('valid request triggers rule', function(t) {
 
     supertest(server)
         .post('/webhook')
-        .set('Authorization', signRequest('test', 'foofaa'))
+        .set('Signature', signRequest(obj))
         .set('Travis-Repo-Slug', 'test')
         .send(json)
         .expect('Content-Type', /json/)
